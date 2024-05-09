@@ -9,11 +9,18 @@
             .grid-container {
                 display: flex;
                 flex-direction: column;
-                background-color: #4CAF50; /* Green */
                 padding: 1rem;
                 cursor: pointer;
                 text-align: center;
                 color: white;
+            }
+
+            .grid-container.not-exist {
+                background-color: #4CAF50;
+            }
+
+            .grid-container.exist {
+                background-color: #dc3545;
             }
         </style>
     </head>
@@ -43,9 +50,25 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-4 gap-4">
-                    <div class="grid-container">
+                    <div class="grid-container exist">
                         <div class="grid-item">Facebook</div>
                         <div class="grid-item">Exist</div>
+                    </div>
+                    <div class="grid-container not-exist">
+                        <div class="grid-item">Twitter</div>
+                        <div class="grid-item">Does not exist</div>
+                    </div>
+                    <div class="grid-container exist">
+                        <div class="grid-item">LinkedIn</div>
+                        <div class="grid-item">Does not exist</div>
+                    </div>
+                    <div class="grid-container not-exist">
+                        <div class="grid-item">Pintrest</div>
+                        <div class="grid-item">Does not exist</div>
+                    </div>
+                    <div class="grid-container not-exist">
+                        <div class="grid-item">Discord</div>
+                        <div class="grid-item">Does not exist</div>
                     </div>
                 </div>
             </div>
