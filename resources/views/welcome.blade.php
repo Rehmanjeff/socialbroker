@@ -33,7 +33,7 @@
                     <button type="button" class="rounded bg-indigo-500 px-8 py-2 ml-auto mt-6 text-md font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Search</button>
                 </form>
             </div>
-            <div id="step-two" class="md:max-w-[50%] mx-auto hidden">
+            <div id="step-two" class="md:max-w-[50%] mx-auto">
                 <div class="flex flex-col mx-auto w-fit bg-transparent text-center gap-2 mb-10">
                     <h1 class="text-3xl">
                         Social media presence for: Socialbroker
