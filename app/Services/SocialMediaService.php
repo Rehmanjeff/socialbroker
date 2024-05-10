@@ -38,7 +38,16 @@ class SocialMediaService
             ];
 
             if ($statusCode == 200) {
-                $matched++;
+
+                if ($platform['name'] === 'Twitch') {
+                    $html = file_get_contents('https://twitch.tv/' . $username);
+                    // Check if the username exists in the HTML content
+                    if (strpos($html, $username) !== false) {
+                        $matched++;
+                    }
+                } else {
+                    $matched++;
+                }
             }
         }
 
