@@ -27,6 +27,6 @@ class SocialMediaController extends Controller
     public function getSocialMediaPresence (SocialMediaPresenceRequest $request)
     {
         $response = $this->socialMediaService->getAvailability($request->input('username'));
-        return response()->json($response);
+        return response()->json(['data' => $response['result'], 'total' => $response['total'], 'matched' => $response['matched']]);
     }
 }

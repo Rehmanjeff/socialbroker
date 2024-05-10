@@ -6,13 +6,7 @@ class SocialMediaService
 {
     public function __construct()
     {
-        $this->platforms = [
-            [
-                'id' => 1,
-                'name' => 'JSFiddle',
-                'uri' => 'https://jsfiddle.net/user/{username}/'
-            ],
-        ];
+        $this->platforms = Config('constants.platforms');
     }
 
     protected function findPlatformById($id)
@@ -29,29 +23,34 @@ class SocialMediaService
     public function getAvailability($username)
     {
         $return = [];
+        $matched = 0;
 
-        foreach ($platforms as $key => $platform) {
+        foreach ($this->platforms as $key => $platform) {
 
             $url = str_replace('{username}', $username, $platform['url']);
-            $isAvailable = $this->isAvailable($username, $url);
+            $statusCode = $this->getStatusCode($url);
 
             $return[] = [
                 'id' => $platform['id'],
                 'name' => $platform['name'],
                 'url' => $url,
-                'status' => $isAvailable ? 1 : 0,
+                'status' => $statusCode,
             ];
+
+            if ($statusCode == 200) {
+                $matched++;
+            }
         }
 
-        return $return;
+        return ['result' => $return, 'total' => count($this->platforms), 'matched' => $matched];
     }
 
-    public function isAvailable($username, $url)
+    public function getStatusCode($url)
     {
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_NOBODY, true);
 
@@ -60,10 +59,6 @@ class SocialMediaService
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($statusCode === 404) {
-            return false;
-        }
-
-        return true;
+        return $statusCode;
     }
 }
