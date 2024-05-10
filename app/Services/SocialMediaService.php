@@ -28,7 +28,11 @@ class SocialMediaService
         foreach ($this->platforms as $key => $platform) {
 
             $url = str_replace('{username}', $username, $platform['url']);
-            $statusCode = $this->getStatusCode($url);
+            if ($platform['name'] == 'Twitch') {
+                $statusCode = $this->twitchStatusCode($url, $username);
+            } else {
+                $statusCode = $this->getStatusCode($url);
+            }
 
             $return[] = [
                 'id' => $platform['id'],
@@ -38,20 +42,23 @@ class SocialMediaService
             ];
 
             if ($statusCode == 200) {
-
-                if ($platform['name'] === 'Twitch') {
-                    $html = file_get_contents('https://twitch.tv/' . $username);
-                    // Check if the username exists in the HTML content
-                    if (strpos($html, $username) !== false) {
-                        $matched++;
-                    }
-                } else {
-                    $matched++;
-                }
+                $matched++;
             }
         }
 
         return ['result' => $return, 'total' => count($this->platforms), 'matched' => $matched];
+    }
+
+    public function twitchStatusCode($url, $username)
+    {
+        $html = file_get_contents($url);
+        
+        // Check if the username exists in the HTML content
+        if (strpos($html, $username) !== false) {
+            return 200;
+        } else {
+            return 404;
+        }
     }
 
     public function getStatusCode($url)
