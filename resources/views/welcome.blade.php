@@ -56,7 +56,6 @@
                         stepOne.addClass('hidden');
                         stepTwo.find('#content').html('');
                         stepTwo.find('#show-username').text(username);
-                        stepTwo.find('#show-data').addClass('hidden');
                         stepTwo.removeClass('hidden');
                         let formData = new FormData();
                         formData.append("username", username);
@@ -72,9 +71,7 @@
                                 loader.addClass('hidden');
                                 const html = createHTML(response.data);
                                 stepTwo.find('#content').html(html);
-                                stepTwo.find('#show-data').removeClass('hidden');
-                                stepTwo.find('#show-data').find('#show_total').text(response.total);
-                                stepTwo.find('#show-data').find('#show_matched').text(response.matched);
+                                stepTwo.find('#show-data').text('We have searched '+ response.total +' platforms and found your username in ' + response.matched);
                             },
                             error: function(xhr, status, error) {
                                 errorMessage = error;
@@ -85,6 +82,10 @@
                     } else {
                         $('#error').text(errorMessage).removeClass('hidden');
                     }
+                });
+
+                $('#arrow-back').click(function () {
+                    location.reload();
                 });
             });
 
@@ -130,12 +131,17 @@
                 </form>
             </div>
             <div id="step-two" class="md:max-w-[50%] mx-auto hidden">
-                <div class="flex flex-col mx-auto w-fit bg-transparent text-center gap-2 mb-10">
-                    <h1 class="text-3xl">
-                        Social media presence for: <span id="show-username"></span>
-                    </h1>
-                    <div id="show-data" class="text-lg text-gray-700 hidden">
-                        We have searched <span id="show_total"></span> platforms and found your username in <span id="show_matched"></span>
+                <div class="flex items-center mb-10">
+                    <div id="arrow-back" class="cursor-pointer">
+                        <img class="w-[33px]" src="https://www.svgrepo.com/show/49353/backward-arrow.svg" alt="">
+                    </div>
+                    <div class="flex flex-col mx-auto w-fit bg-transparent text-center gap-2">
+                        <h1 class="text-3xl">
+                            Social media presence for: <span id="show-username"></span>
+                        </h1>
+                        <div id="show-data" class="text-lg text-gray-700">
+                            We are searching social media platforms. Please be patient
+                        </div>
                     </div>
                 </div>
                 <div id="content" class="grid grid-cols-4 gap-4"></div>

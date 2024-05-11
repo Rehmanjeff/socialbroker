@@ -29,8 +29,19 @@ class SocialMediaService
         foreach ($this->platforms as $key => $platform) {
 
             $url = str_replace('{username}', $username, $platform['url']);
-            if ($platform['name'] == 'Twitch') {
-                $statusCode = $this->twitchStatusCode($url, $username);
+
+            if ($platform['id'] == 13) {
+                $statusCode = $this->getTwitchStatusCode($url, $username);
+            } else if ($platform['id'] == 7) {
+                $statusCode = $this->getFacebookStatusCode($url, $username);
+            } else if ($platform['id'] == 1) {
+                $statusCode = $this->getInstagramStatusCode($url, $username);
+            } else if ($platform['id'] == 10) {
+                $statusCode = $this->getImgurStatusCode($url, $username);
+            } else if ($platform['id'] == 35) {
+                $statusCode = $this->getWishListStatusCode($url, $username);
+            } else if ($platform['id'] == 32) {
+                $statusCode = $this->getTeamTreeHouseStatusCode($url, $username);
             } else {
                 $statusCode = $this->getStatusCode($url);
             }
@@ -48,18 +59,6 @@ class SocialMediaService
         }
 
         return ['result' => $return, 'total' => count($this->platforms), 'matched' => $matched];
-    }
-
-    public function twitchStatusCode($url, $username)
-    {
-        $html = file_get_contents($url);
-
-        // Check if the username exists in the HTML content
-        if (strpos($html, $username) !== false) {
-            return 200;
-        } else {
-            return 404;
-        }
     }
 
     public function getStatusCode($url)
@@ -86,13 +85,67 @@ class SocialMediaService
         return $position !== false ? 404 : 200;
     }
 
+    public function getTeamTreeHouseStatusCode($url, $username)
+    {
+        $headers = array(
+            'Content-Type: application/json',
+            'Authorization: Bearer 260|hVeSAQEjshS0mnBoDrH5zWS7L8SDJrXID0UGDMspd6bcea69',
+            'Cookie: _treehouse_session=DbYjeddH%2B6q90XgIpPKGd6aErQcXQWqjo59cbaixvgPG8PGK42nnHfsP4dm8NVyTCCD6nWFsz%2BwnydmuL2XIhkV74apkF9sDcUaqKtnUwzxZc9RnjmJyR6oUPB5Inn6VYt4%2BpyYNFasNwSKFIbf445Q77df4y3Q3MaktoKYOAF%2BC7GWRglsr%2FTrs%2BL9%2B%2BJFkfnXocNM72Q3cUVjiyhg8f%2FSclwKJ1La%2B%2FZ6b7bFuiJ1U3kMvhTbDN5N%2BxCrb2mRlQTB71S6VLLBFeca%2BI3lPsvfyjzbx1aAkbb%2BjZzO2hXXl--BBNip8SH89nduJzC--aeXPNSTnSMmXyWOFHP7qoA%3D%3D; sid=31b4d0a4-147b-48fb-9d9d-66b553d7d14c; vid=8682444096'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+        if ($response === false) {
+            return 404;
+        } else {
+            $position = strpos($response, $username);
+            return $position !== false ? 200 : 404;
+        }
+    }
+
+    public function getWishListStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('POST', $url);
+            $htmlContent = $response->getBody()->getContents();
+            $position = strpos($htmlContent, 'Page Not Found');
+            return $position !== false ? 404 : 200;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            echo $e->getMessage();exit;
+            return 404;
+        }
+    }
+
+    public function getImgurStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('POST', $url);
+            $htmlContent = $response->getBody()->getContents();
+            $position = strpos($htmlContent, 'https://imgur.com/user/' . $username);
+            return $position !== false ? 200 : 404;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            echo $e->getMessage();exit;
+            return 404;
+        }
+    }
+
     public function getFacebookStatusCode($url, $username)
     {
         $client = new Client();
         try {
             $response = $client->request('GET', $url);
             $htmlContent = $response->getBody()->getContents();
-            echo $htmlContent;exit;
             $position = strpos($htmlContent, 'fb://profile/');
             return $position !== false ? 200 : 404;
         } catch (\GuzzleHttp\Exception\RequestException $e) {
