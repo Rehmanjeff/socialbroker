@@ -22,7 +22,7 @@ class SocialMediaPresenceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|string|alpha_num'
+            'username' => 'required|string|string'
         ];
     }
 }

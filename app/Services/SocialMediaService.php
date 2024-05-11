@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use GuzzleHttp\Client;
 
 class SocialMediaService
 {
@@ -52,7 +53,7 @@ class SocialMediaService
     public function twitchStatusCode($url, $username)
     {
         $html = file_get_contents($url);
-        
+
         // Check if the username exists in the HTML content
         if (strpos($html, $username) !== false) {
             return 200;
@@ -66,7 +67,7 @@ class SocialMediaService
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_NOBODY, true);
 
@@ -76,5 +77,40 @@ class SocialMediaService
         curl_close($ch);
 
         return $statusCode;
+    }
+
+    public function getTwitchStatusCode($url, $username)
+    {
+        $html = file_get_contents($url);
+        $position = strpos($html, 'Sorry, that page is in another castle');
+        return $position !== false ? 404 : 200;
+    }
+
+    public function getFacebookStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('GET', $url);
+            $htmlContent = $response->getBody()->getContents();
+            echo $htmlContent;exit;
+            $position = strpos($htmlContent, 'fb://profile/');
+            return $position !== false ? 200 : 404;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            echo $e->getMessage();exit;
+            return 404;
+        }
+    }
+
+    public function getInstagramStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('GET', $url);
+            $htmlContent = $response->getBody()->getContents();
+            $position = strpos($htmlContent, 'https://www.instagram.com/' . $username);
+            return $position !== false ? 200 : 404;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            return 404;
+        }
     }
 }

@@ -31,11 +31,10 @@
                 let html = '';
 
                 data.forEach(function(item) {
-                    html += '<div class="grid-container ' + (item.status == 200 ? "exist" : "not-exist") + '">';
+                    html += '<div onclick="navigate(\'' + item.url + '\')" class="grid-container ' + (item.status == 200 ? "exist" : "not-exist") + '">';
                     html += '<div class="grid-item">' + item.name + '</div>';
                     html += '<div class="grid-item">' + (item.status == 200 ? "Exist" : "Does not exist") + '</div>';
                     html += '</div>';
-                    console.log(html);
                 });
 
                 return html;
@@ -88,6 +87,10 @@
                     }
                 });
             });
+
+            function navigate(url){
+                window.open(url, '_blank');
+            }
         </script>
         <style>
             .grid-container {
