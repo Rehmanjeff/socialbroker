@@ -51,8 +51,6 @@ class SocialMediaService
                 $statusCode = $this->getFiverStatusCode($url, $username);
             } else if ($platform['id'] == 20) {
                 $statusCode = $this->getThemeForestStatusCode($url, $username);
-            } else if ($platform['id'] == 27) {
-                $statusCode = $this->getTwitterStatusCode($url, $username);
             } else {
                 $statusCode = $this->getStatusCode($url);
             }
@@ -222,20 +220,6 @@ class SocialMediaService
             $htmlContent = $response->getBody()->getContents();
             $position = strpos($htmlContent, 'https://themeforest.net/user/' . $username);
             return $position !== false ? 200 : 404;
-        } catch (\Exception $e) {
-            return 404;
-        }
-    }
-
-    public function getTwitterStatusCode($url, $username)
-    {
-        $connection = new TwitterOAuth("QXIgl3rygbZKxVhsnurYJyVkC", "s67BBufQUrKS5WfWVujqk33BwdVvrnEHb8p63pXe3lKRvRyUsl", "2491516098-MKHHtlDIL98400Mo2GRKpf9ai9KCmpXI320uJ6j", "l9in5aRhM07X4MPUddPu2StY1gc8Std3R3a196cvlijMA");
-        //$connection->setApiVersion('2');
-        $connection->setApiVersion(1.1);
-
-        try {
-            $user = $connection->get("users/show", ["screen_name" => $username]);
-            return 200;
         } catch (\Exception $e) {
             return 404;
         }
