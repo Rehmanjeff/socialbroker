@@ -28,11 +28,6 @@ return [
             'url' => 'https://jsfiddle.net/user/{username}/'
         ],
         [
-            'id' => 6,
-            'name' => 'X / Twitter',
-            'url' => 'https://mobile.twitter.com/{username}'
-        ],
-        [
             'id' => 7,
             'name' => 'Facebook',
             'url' => 'https://web.facebook.com/{username}'
@@ -138,19 +133,9 @@ return [
             'url' => 'https://www.behance.net/{username}'
         ],
         [
-            'id' => 29,
-            'name' => 'Ello.co',
-            'url' => 'https://ello.co/{username}'
-        ],
-        [
             'id' => 30,
             'name' => 'BuzzFeed',
             'url' => 'https://www.buzzfeed.com/{username}'
-        ],
-        [
-            'id' => 31,
-            'name' => 'FollowUs',
-            'url' => 'https://followus.com/{username}'
         ],
         [
             'id' => 32,
@@ -160,7 +145,7 @@ return [
         [
             'id' => 33,
             'name' => 'Venmo',
-            'url' => 'https://account.venmo.com/{username}'
+            'url' => 'https://account.venmo.com/u/{username}'
         ],
         [
             'id' => 34,
@@ -205,7 +190,7 @@ return [
         [
             'id' => 43,
             'name' => 'Tumblr',
-            'url' => 'http://{username}.tumblr.com/'
+            'url' => 'https://tumblr.com/{username}'
         ],
         [
             'id' => 44,

@@ -18,7 +18,7 @@
                 } else if (value.length < 5 || value.length > 20) {
                 errorMessage = 'The username cannot be more than 20 characters in length';
                 return false;
-                } else if (/[\s~`!@#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(value)) {
+                } else if (/\s/.test(value)) {
                 errorMessage = 'The username can only contain alpha numeric characters and should not contain any special characters or blank spaces';
                 return false;
                 }
@@ -124,11 +124,9 @@
                         We will browse all popular social media platforms for your username
                     </div>
                 </div>
-                <form class="flex flex-col" action="" method="POST">
-                    <input type="text" id="username" placeholder="Search your username" class="h-[40px] w-full bg-gray-100 rounded outline-none border-black pl-2 border" />
-                    <button type="button" id="submit" class="rounded bg-indigo-500 px-8 py-2 ml-auto mt-6 text-md font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Search</button>
-                    <div id="error" class="hidden ml-auto text-red-500 mt-2 font-bold text-sm"></div>
-                </form>
+                <input type="text" id="username" placeholder="Search your username" class="h-[40px] w-full bg-gray-100 rounded outline-none border-black pl-2 border" />
+                <button type="button" id="submit" class="rounded bg-indigo-500 px-8 py-2 ml-auto mt-6 text-md font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Search</button>
+                <div id="error" class="hidden ml-auto text-red-500 mt-2 font-bold text-sm"></div>
             </div>
             <div id="step-two" class="md:max-w-[50%] mx-auto hidden">
                 <div class="flex items-center mb-10">

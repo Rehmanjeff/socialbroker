@@ -42,6 +42,14 @@ class SocialMediaService
                 $statusCode = $this->getWishListStatusCode($url, $username);
             } else if ($platform['id'] == 32) {
                 $statusCode = $this->getTeamTreeHouseStatusCode($url, $username);
+            } else if ($platform['id'] == 12) {
+                $statusCode = $this->getReditStatusCode($url, $username);
+            } else if ($platform['id'] == 16) {
+                $statusCode = $this->getMediumStatusCode($url, $username);
+            } else if ($platform['id'] == 14) {
+                $statusCode = $this->getFiverStatusCode($url, $username);
+            } else if ($platform['id'] == 20) {
+                $statusCode = $this->getThemeForestStatusCode($url, $username);
             } else {
                 $statusCode = $this->getStatusCode($url);
             }
@@ -120,8 +128,7 @@ class SocialMediaService
             $htmlContent = $response->getBody()->getContents();
             $position = strpos($htmlContent, 'Page Not Found');
             return $position !== false ? 404 : 200;
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            echo $e->getMessage();exit;
+        } catch (\Exception $e) {
             return 404;
         }
     }
@@ -134,8 +141,7 @@ class SocialMediaService
             $htmlContent = $response->getBody()->getContents();
             $position = strpos($htmlContent, 'https://imgur.com/user/' . $username);
             return $position !== false ? 200 : 404;
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            echo $e->getMessage();exit;
+        } catch (\Exception $e) {
             return 404;
         }
     }
@@ -148,8 +154,7 @@ class SocialMediaService
             $htmlContent = $response->getBody()->getContents();
             $position = strpos($htmlContent, 'fb://profile/');
             return $position !== false ? 200 : 404;
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            echo $e->getMessage();exit;
+        } catch (\Exception $e) {
             return 404;
         }
     }
@@ -162,7 +167,59 @@ class SocialMediaService
             $htmlContent = $response->getBody()->getContents();
             $position = strpos($htmlContent, 'https://www.instagram.com/' . $username);
             return $position !== false ? 200 : 404;
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (\Exception $e) {
+            return 404;
+        }
+    }
+
+    public function getReditStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('GET', $url);
+            $htmlContent = $response->getBody()->getContents();
+            $position = strpos($htmlContent, 'nobody on Reddit goes by that name');
+            return $position !== false ? 404 : 200;
+        } catch (\Exception $e) {
+            return 404;
+        }
+    }
+
+    public function getMediumStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('GET', $url);
+            $htmlContent = $response->getBody()->getContents();
+            $position = strpos($htmlContent, 'PAGE NOT FOUND');
+            return $position !== false ? 404 : 200;
+        } catch (\Exception $e) {
+            return 404;
+        }
+    }
+
+    public function getFiverStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('GET', $url);
+            $htmlContent = $response->getBody()->getContents();
+            $position = strpos($htmlContent, $username . ' | Profile | Fiverr');
+            return $position !== false ? 200 : 404;
+        } catch (\Exception $e) {
+            return 404;
+        }
+    }
+
+    public function getThemeForestStatusCode($url, $username)
+    {
+        $client = new Client();
+        try {
+            $response = $client->request('GET', $url);
+            $htmlContent = $response->getBody()->getContents();
+            $position = strpos($htmlContent, 'https://themeforest.net/user/' . $username);
+            return $position !== false ? 200 : 404;
+        } catch (\Exception $e) {
             return 404;
         }
     }
