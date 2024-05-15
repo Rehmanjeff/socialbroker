@@ -2,7 +2,8 @@
 
 namespace App\Services;
 use GuzzleHttp\Client;
-use Abraham\TwitterOAuth\TwitterOAuth;
+use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\HttpClient\HttpClient;
 
 class SocialMediaService
 {
@@ -51,6 +52,8 @@ class SocialMediaService
                 $statusCode = $this->getFiverStatusCode($url, $username);
             } else if ($platform['id'] == 20) {
                 $statusCode = $this->getThemeForestStatusCode($url, $username);
+            } else if ($platform['id'] == 27) {
+                $statusCode = $this->getTwitterStatusCode($url, $username);
             } else {
                 $statusCode = $this->getStatusCode($url);
             }
@@ -223,5 +226,14 @@ class SocialMediaService
         } catch (\Exception $e) {
             return 404;
         }
+    }
+
+    public function getTwitterStatusCode($url, $username)
+    {
+
+        $browser = new HttpBrowser(HttpClient::create());
+        $browser->request('POST', $url);
+        $response = $browser->getResponse();
+        echo $response;exit;
     }
 }
