@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.each-platform.available .status-card {
+    background-color: #BAFFF2;
+    border-color: #02B090;
+    color: #02B090;
+}
+
+.each-platform.taken .status-card {
+    background-color: #FC064C;
+    border-color: #67011f;
+    color: #67011f;
+}
+
+.each-platform.suspended .status-card {
+    background-color: #C596FF;
+    border-color: #8B2BFF;
+    color: #8B2BFF;
+}
+
+.each-platform.special_charac_not_allowed .status-card {
+    background-color: #FED700;
+    border-color: #b29600;
+    color: #b29600;
+}
+
+.each-platform.upper_case_letters_not_allowed .status-card {
+    background-color: #FED700;
+    border-color: #b29600;
+    color: #b29600;
+}
+
+.each-platform.too_little_characters .status-card {
+    background-color: #FED700;
+    border-color: #b29600;
+    color: #b29600;
+}
+
+.each-platform.too_many_characters .status-card {
+    background-color: #FED700;
+    border-color: #b29600;
+    color: #b29600;
+}
+
+.each-platform.must_contain_letter .status-card {
+    background-color: #FED700;
+    border-color: #b29600;
+    color: #b29600;
+}
+
+.each-platform.is_inappropriate .status-card {
+    background-color: #FED700;
+    border-color: #b29600;
+    color: #b29600;
+}
