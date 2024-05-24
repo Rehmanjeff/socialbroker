@@ -10,10 +10,10 @@ export const checkAvailability = async (req: Request, res: Response): Promise<vo
         return
     }
 
-    const { id, url, username } = req.body
+    const { id, url, username, retry } = req.body
 
     try {
-        const isAvailable = await getAvailability(id, url, username)
+        const isAvailable = await getAvailability(id, url, username, retry)
         res.json({ isAvailable })
     } catch (error) {
         console.error('Error in checkAvailability:', error)

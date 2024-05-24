@@ -3,5 +3,6 @@ export type UsernameStatus = 'taken' | 'available' | 'suspended' | 'special_char
 
 export interface PlatformResponse {
     status: UsernameStatus | null,
-    error: string | null
+    error: string | null,
+    url: string | null
 }

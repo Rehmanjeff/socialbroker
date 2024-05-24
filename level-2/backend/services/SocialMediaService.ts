@@ -10,11 +10,12 @@ const proxy = {
     password: 'dqwxvd9rxb4r'
 }
 
-export const getAvailability = async (id: number, url: string, username: string) => {
+export const getAvailability = async (id: number, url: string, username: string, retry: boolean) => {
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: null
     }
 
     try {
@@ -23,7 +24,7 @@ export const getAvailability = async (id: number, url: string, username: string)
         } else if (id == 2) {
             response = await isInstagramAvailable(url, username)
         } else if (id == 3) {
-            response = await isLinkedInAvailable(url, username)
+            response = await isLinkedInAvailable(url, username, retry)
         } else if (id == 4) {
             response = await isTwitchAvailable(url, username)
         } else if (id == 5) {
@@ -73,7 +74,8 @@ const getStatusCode = async (url: string): Promise<PlatformResponse> => {
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: null
     }
 
     try {
@@ -89,15 +91,16 @@ const getStatusCode = async (url: string): Promise<PlatformResponse> => {
 
 const isFacebookAvailable = async (url: string, username: string): Promise<PlatformResponse> => {
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
-    const email : string = 't7851493@gmail.com'
-    const password : string = 'bewareNAR(@'
-    const checkUsernameUrl : string = 'https://accountscenter.facebook.com/profiles/61560075389144/username/?entrypoint=fb_account_center'
+    const email : string = 'uuzmau@gmail.com'
+    const password : string = 'pacificVSatlantic'
+    const checkUsernameUrl : string = 'https://accountscenter.facebook.com/profiles/100002464119672/username/?entrypoint=fb_account_center'
     const timeout : number = 120000
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     try {
@@ -148,11 +151,12 @@ const isFacebookAvailable = async (url: string, username: string): Promise<Platf
     }
 }
 
-const isLinkedInAvailable = async (url: string, username: string): Promise<PlatformResponse> => {
+const isLinkedInAvailable = async (url: string, username: string, retry: boolean = false): Promise<PlatformResponse> => {
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/in/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -168,11 +172,19 @@ const isLinkedInAvailable = async (url: string, username: string): Promise<Platf
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
-    const email : string = 't7851493@gmail.com'
-    const password : string = 'bewareNAR(@'
+    let email : string
+    let password : string
     const timeout : number = 120000
+
+    if (retry) {
+        email = 'habib.r@tymeahead.com'
+        password = 'bewareNAR(@'
+    } else {
+        email = 't7851493@gmail.com'
+        password = 'bewareNAR(@'
+    }
 
     try {
 
@@ -225,7 +237,8 @@ const isInstagramAvailable = async (url: string, username: string): Promise<Plat
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -241,7 +254,7 @@ const isInstagramAvailable = async (url: string, username: string): Promise<Plat
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
     const resHolderSpanClass = 'xo3uz88'
@@ -287,7 +300,8 @@ const isTwitchAvailable = async (url: string, username: string): Promise<Platfor
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -303,7 +317,7 @@ const isTwitchAvailable = async (url: string, username: string): Promise<Platfor
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
     const errHolderClass = 'kfKMUE'
@@ -347,7 +361,8 @@ const isYouTubeAvailable = async (url: string, username: string): Promise<Platfo
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/user/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -372,7 +387,8 @@ const isPintrestAvailable = async (url: string, username: string): Promise<Platf
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -388,7 +404,7 @@ const isPintrestAvailable = async (url: string, username: string): Promise<Platf
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
     const email : string = 't7851493@gmail.com'
@@ -459,7 +475,8 @@ const isFiverrAvailable = async (url: string, username: string): Promise<Platfor
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -475,7 +492,7 @@ const isFiverrAvailable = async (url: string, username: string): Promise<Platfor
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -504,7 +521,8 @@ const isImgurAvailable = async (url: string, username: string): Promise<Platform
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -520,7 +538,7 @@ const isImgurAvailable = async (url: string, username: string): Promise<Platform
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -561,7 +579,8 @@ const isAskFmAvailable = async (url: string, username: string): Promise<Platform
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -577,7 +596,7 @@ const isAskFmAvailable = async (url: string, username: string): Promise<Platform
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -607,7 +626,8 @@ const isMediumAvailable = async (url: string, username: string): Promise<Platfor
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/@${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -623,7 +643,7 @@ const isMediumAvailable = async (url: string, username: string): Promise<Platfor
         return response
     }
 
-    const browser : Browser = await puppeteer.launch({ headless: false })
+    const browser : Browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -657,7 +677,8 @@ const isSoundCloudAvailable = async (url: string, username: string): Promise<Pla
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -676,7 +697,7 @@ const isSoundCloudAvailable = async (url: string, username: string): Promise<Pla
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -706,7 +727,8 @@ const isBandcampAvailable = async (url: string, username: string): Promise<Platf
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -725,7 +747,7 @@ const isBandcampAvailable = async (url: string, username: string): Promise<Platf
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -759,7 +781,8 @@ const isGravatarAvailable = async (url: string, username: string): Promise<Platf
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -778,7 +801,7 @@ const isGravatarAvailable = async (url: string, username: string): Promise<Platf
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -812,7 +835,8 @@ const isDribbbleAvailable = async (url: string, username: string): Promise<Platf
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}/about`
     }
 
     // Testing on platform's basic conditions first
@@ -828,7 +852,7 @@ const isDribbbleAvailable = async (url: string, username: string): Promise<Platf
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
     const email : string = 't7851493@gmail.com'
@@ -881,7 +905,8 @@ const isTwitterAvailable = async (url: string, username: string): Promise<Platfo
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -899,13 +924,13 @@ const isTwitterAvailable = async (url: string, username: string): Promise<Platfo
 
     const browser = await puppeteer.launch({
         headless: false,
-        args: [`--proxy-server=http://${proxy.ip}:${proxy.port}`]
+        //args: [`--proxy-server=http://${proxy.ip}:${proxy.port}`]
     })
     const page = await browser.newPage()
-    await page.authenticate({
-        username: proxy.username,
-        password: proxy.password
-    })
+    // await page.authenticate({
+    //     username: proxy.username,
+    //     password: proxy.password
+    // })
     const timeout : number = 120000
 
     try {
@@ -947,7 +972,8 @@ const isAboutMeAvailable = async (url: string, username: string): Promise<Platfo
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -963,7 +989,7 @@ const isAboutMeAvailable = async (url: string, username: string): Promise<Platfo
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -997,7 +1023,8 @@ const isGithubAvailable = async (url: string, username: string): Promise<Platfor
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -1013,7 +1040,7 @@ const isGithubAvailable = async (url: string, username: string): Promise<Platfor
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -1042,7 +1069,8 @@ const isPatreonAvailable = async (url: string, username: string): Promise<Platfo
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/${username}/creators`
     }
 
     // Testing on platform's basic conditions first
@@ -1061,7 +1089,7 @@ const isPatreonAvailable = async (url: string, username: string): Promise<Platfo
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -1095,7 +1123,8 @@ const isDisqusAvailable = async (url: string, username: string): Promise<Platfor
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/by/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -1111,7 +1140,7 @@ const isDisqusAvailable = async (url: string, username: string): Promise<Platfor
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
@@ -1147,7 +1176,8 @@ const isKickstarterAvailable = async (url: string, username: string): Promise<Pl
 
     let response : PlatformResponse = {
         status: null,
-        error: null
+        error: null,
+        url: `${url}/profile/${username}`
     }
 
     // Testing on platform's basic conditions first
@@ -1166,7 +1196,7 @@ const isKickstarterAvailable = async (url: string, username: string): Promise<Pl
         return response
     }
 
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: true })
     const page = await browser.newPage()
     const timeout : number = 120000
 
