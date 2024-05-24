@@ -22,7 +22,7 @@
         <div class="flex flex-col gap-4 mt-20">
             <h1 class="text-3xl text-center">The Platforms we support. More to come</h1>
             <div class="p-4 border rounded-2xl w-full max-w-[1200px] grid grid-cols-3 bg-[#f8fcfe] gap-4">
-                <div @click="handlePlatformClick(platform)" v-for="(platform, index) in platforms" :key="index" class="col-span-1 border rounded-2xl p-4 bg-white each-platform" :class="platform.status">
+                <div @click="handlePlatformClick(platform)" v-for="(platform, index) in platforms" :key="index" class="col-span-1 border rounded-2xl p-4 bg-white each-platform cursor-pointer" :class="platform.status">
                     <div class="flex">
                         <div class="flex flex-col gap-2">
                             <div class="w-[66px] h-[66px] p-[2px] rounded-full border flex">
@@ -63,7 +63,7 @@ const platforms = ref<PlatformType[] | []>([
     {id: 2, name: 'Instagram', icon: 'instagram.png', url: 'https://www.instagram.com', status: null},
     {id: 5, name: 'YouTube', icon: 'youtube.png', url: 'https://www.youtube.com', status: null},
     {id: 15, name: 'X / Twitter', icon: 'x.png', url: 'https://twitter.com', status: null},
-    // {id: 3, name: 'LinkedIn', icon: 'linkedin.png', url: 'https://www.linkedin.com', status: null},
+    {id: 3, name: 'LinkedIn', icon: 'linkedin.png', url: 'https://www.linkedin.com', status: null},
     {id: 6, name: 'Pinterest', icon: 'pinterest.png', url: 'https://www.pinterest.com', status: null},
     {id: 4, name: 'Twitch', icon: 'twitch.png', url: 'https://www.twitch.tv', status: null},
     {id: 9, name: 'Ask FM', icon: 'askfm.png', url: 'https://ask.fm', status: null},
@@ -110,6 +110,8 @@ const getPlatformStatus = (platform: PlatformType) => {
         return 'Must contain letter'
     } else if (platform.status == 'is_inappropriate') {
         return 'Inappropriate characters'
+    } else if (platform.status == 'is_inappropriate') {
+        return 'Unknown status'
     }
 
     return ''
@@ -134,6 +136,8 @@ const getPlatformStatusIcon = (platform: PlatformType) => {
         return 'warning.svg'
     } else if (platform.status == 'is_inappropriate') {
         return 'warning.svg'
+    } else if (platform.status == null) {
+        return 'warning.svg'
     }
 
     return ''
@@ -147,6 +151,13 @@ const startFetchingStatus = async () => {
         try {
             const response = await getAvailability(platform.id, platform.url, username.value)
             platform.status = response?.data.isAvailable.status
+            platform.url = response?.data.isAvailable.status !== null ? response?.data.isAvailable.url : platform.url
+
+            if (platform.id == 3 && response?.data.isAvailable.status == null) {
+                const response = await getAvailability(platform.id, platform.url, username.value, true)
+                platform.status = response?.data.isAvailable.status
+                platform.url = response?.data.isAvailable.url
+            }
         } catch (error) {
             console.error(`Error processing platform ${platform.name}:`, error)
         }
@@ -155,7 +166,9 @@ const startFetchingStatus = async () => {
 
 const handlePlatformClick = (platform: PlatformType) => {
 
-
+    if(platform.status) {
+        window.open(platform.url, '_blank')
+    }
 }
 
 const handleSubmit = () => {
